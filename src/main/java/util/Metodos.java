@@ -49,7 +49,7 @@ public class Metodos {
 
         driver.findElement(By.xpath("/html/body/table[2]/tbody/tr[1]/td[2]/table/tbody/tr[2]/td/form/table[2]/tbody/tr/td/a"))
                 .click(); //aceptar
-        
+
         getLlamantes();  //llamo al metodo para buscar las llamantes
     }
 
@@ -75,12 +75,16 @@ public class Metodos {
                 if (parTipo.get(i).getText().equals("TxHOST")) {        //cojo el elemento llamante en concreto 
                     System.out.println(par.get(i).getText());           //click sobre el 
                     par.get(i).click();                                 //y llamo al metodo de llamantes para el
-                    indexAux = par.get(i+1).getText();
+                    if (i + 1 <= parTipo.size()) {
+                        indexAux = par.get(i + 1).getText();
+                    }
                     getLlamantes();
                 } else if (parTipo.get(i).getText().equals("RUTINA")) {
                     System.out.println(par.get(i).getText());
                     par.get(i).click();
-                    indexAux = par.get(i+1).getText();
+                    if (i + 1 <= parTipo.size()) {
+                        indexAux = par.get(i + 1).getText();
+                    }
                     getLlamantes();
                 }
             }
@@ -89,17 +93,23 @@ public class Metodos {
                 if (imParTipo.get(i).getText().equals("TxHOST")) {
                     System.out.println(imPar.get(i).getText());
                     imPar.get(i).click();
-                    indexAux = imPar.get(i+1).getText();
+                    if (i + 1 <= imParTipo.size()) {
+                        indexAux = imPar.get(i + 1).getText();
+                    }
                     getLlamantes();
                 } else if (imParTipo.get(i).getText().equals("RUTINA")) {
                     System.out.println(imPar.get(i).getText());
                     imPar.get(i).click();
-                    indexAux = imPar.get(i+1).getText();
+                    if (i + 1 <= imParTipo.size()) {
+                        indexAux = imPar.get(i + 1).getText();
+                    }
                     getLlamantes();
                 }
             }
-        }else{ //si no ha encontrado llamantes, volver al nivel anterior y seguir con la siguiente
-            buscarComponente(indexAux);
+        } else { //si no ha encontrado llamantes, volver al nivel anterior y seguir con la siguiente
+            if (!indexAux.equals("")) {
+                buscarComponente(indexAux);
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 
@@ -15,18 +16,18 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class Metodos {
 
-    //private static ChromeDriver driver;
-    private static WebDriver driver;
+    private static ChromeDriver driver;
+    //private static WebDriver driver;
     private static boolean bandera = false;
     private static int index;
     private static BufferedWriter out;
     private static ArrayList<String> componentes;
 
     public static void initDriver() {
-        //System.setProperty("webdriver.chrome.driver", "C:\\Users\\mmorende\\Desktop\\chromedriver.exe");
-        //driver = new ChromeDriver();
-        System.setProperty("webdriver.ie.driver", "C:\\Users\\mmorende\\Desktop\\IEDriverServer.exe");
-        driver = new InternetExplorerDriver();
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\mmorende\\Desktop\\chromedriver.exe");
+        driver = new ChromeDriver();
+        //System.setProperty("webdriver.gecko.driver", "C:\\Users\\mmorende\\Desktop\\geckodriver.exe");
+        //driver = new FirefoxDriver();
 
         componentes = LecturaExcel.listado();
         for (int i = 0; i < componentes.size(); i++) {
@@ -36,7 +37,7 @@ public class Metodos {
 
     public static void buscarComponente(String comp) {
         driver.get("https://tpw.bankinter.bk/www/es-es/cgi/int+aqu+analisis_impacto");    //link de busqueda
-
+                                     //html/body/table[2]/tbody/tr[1]/td[2]/table/tbody/tr[2]/td/form/table[1]/tbody/tr[2]/td[2]/input
         driver.findElement(By.xpath("//html/body/table[2]/tbody/tr[1]/td[2]/table/tbody/tr[2]/td/form/table[1]/tbody/tr[2]/td[2]/input"))
                 .sendKeys(comp);  //introduzco nombre de el componente
 
@@ -68,8 +69,12 @@ public class Metodos {
             System.out.println("no ha encontrado parametros");  //si no existen llamantes, es null
             tabla = null;
         }
+        
+        //System.out.println(tabla.getText());
+        //System.out.println(tabla.getTagName());
+        //System.out.println(tabla);
 
-        if (tabla != null) {                    //si no es null cojo sus llamantes 
+        if (tabla != null /*&& !tabla.getText().equals("") && tabla.getText() != null*/) {                    //si no es null cojo sus llamantes 
             System.out.println("He entrado");
             List<WebElement> parTipo = tabla.findElements(By.cssSelector("#oddRow > td:nth-child(2)"));
             List<WebElement> par = tabla.findElements(By.cssSelector("#oddRow > td:nth-child(1)"));
@@ -77,37 +82,39 @@ public class Metodos {
             List<WebElement> imPar = tabla.findElements(By.cssSelector("#evenRow > td:nth-child(1)"));
 
             for (int i = 0; i < parTipo.size(); i++) {                  //por cada llamante 
-                if (parTipo.get(i).getText().equals("TxHOST")) {        //cojo el elemento llamante en concreto 
+                if (tabla.findElements(By.cssSelector("#oddRow > td:nth-child(2)")).get(i).getText().equals("TxHOST")) {        //cojo el elemento llamante en concreto 
                     System.out.println(par.get(i).getText());           //click sobre el 
+                    if (i + 1 <= parTipo.size()) {
+                        //indexAux = par.get(i + 1).getText();
+                        indexAux = tabla.findElements(By.cssSelector("#oddRow > td:nth-child(1)")).get(i+1).getText();
+                    }
                     par.get(i).click();                                 //y llamo al metodo de llamantes para el
-                    if (i + 1 <= parTipo.size()) {
-                        indexAux = par.get(i + 1).getText();
-                    }
                     getLlamantes();
-                } else if (parTipo.get(i).getText().equals("RUTINA")) {
+                } else if (tabla.findElements(By.cssSelector("#oddRow > td:nth-child(2)")).get(i).getText().equals("RUTINA")) {
                     System.out.println(par.get(i).getText());
-                    par.get(i).click();
                     if (i + 1 <= parTipo.size()) {
-                        indexAux = par.get(i + 1).getText();
+                        //indexAux = par.get(i + 1).getText();
+                        indexAux = tabla.findElements(By.cssSelector("#oddRow > td:nth-child(1)")).get(i+1).getText();
                     }
+                    par.get(i).click();
                     getLlamantes();
                 }
             }
 
             for (int i = 0; i < imParTipo.size(); i++) {
-                if (imParTipo.get(i).getText().equals("TxHOST")) {
+                if (tabla.findElements(By.cssSelector("#evenRow > td:nth-child(2)")).get(i).getText().equals("TxHOST")) {
                     System.out.println(imPar.get(i).getText());
-                    imPar.get(i).click();
                     if (i + 1 <= imParTipo.size()) {
-                        indexAux = imPar.get(i + 1).getText();
+                        indexAux = tabla.findElements(By.cssSelector("#evenRow > td:nth-child(1)")).get(i+1).getText();
                     }
+                    imPar.get(i).click();
                     getLlamantes();
-                } else if (imParTipo.get(i).getText().equals("RUTINA")) {
+                } else if (tabla.findElements(By.cssSelector("#evenRow > td:nth-child(2)")).get(i).getText().equals("RUTINA")) {
                     System.out.println(imPar.get(i).getText());
-                    imPar.get(i).click();
                     if (i + 1 <= imParTipo.size()) {
-                        indexAux = imPar.get(i + 1).getText();
+                        indexAux = tabla.findElements(By.cssSelector("#evenRow > td:nth-child(1)")).get(i+1).getText();
                     }
+                    imPar.get(i).click();
                     getLlamantes();
                 }
             }

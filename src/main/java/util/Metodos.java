@@ -37,9 +37,13 @@ public class Metodos {
 
     public static void buscarComponente(String comp) {
         driver.get("https://tpw.bankinter.bk/www/es-es/cgi/int+aqu+analisis_impacto");    //link de busqueda
+        
                                      //html/body/table[2]/tbody/tr[1]/td[2]/table/tbody/tr[2]/td/form/table[1]/tbody/tr[2]/td[2]/input
-        driver.findElement(By.xpath("//html/body/table[2]/tbody/tr[1]/td[2]/table/tbody/tr[2]/td/form/table[1]/tbody/tr[2]/td[2]/input"))
+                                     System.out.println("hola");
+                                     pause();
+        driver.findElement(By.xpath("/html/body/table[2]/tbody/tr[1]/td[2]/table/tbody/tr[2]/td/form/table[1]/tbody/tr[2]/td[2]/input"))
                 .sendKeys(comp);  //introduzco nombre de el componente
+        System.out.println("hola");
 
         driver.findElement(By.xpath("/html/body/table[2]/tbody/tr[1]/td[2]/table/tbody/tr[2]/td/form/table[1]/tbody/tr[3]/td[2]/input[1]"))
                 .click();  //selecciono Rutina
@@ -122,6 +126,13 @@ public class Metodos {
             if (!indexAux.equals("")) {
                 buscarComponente(indexAux);
             }
+        }
+    }
+    
+    private static void pause() {
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException ex) {
         }
     }
 }

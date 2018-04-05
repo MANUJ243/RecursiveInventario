@@ -4,8 +4,10 @@ import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.Select;
 
 /**
@@ -13,15 +15,18 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class Metodos {
 
-    private static ChromeDriver driver;
+    //private static ChromeDriver driver;
+    private static WebDriver driver;
     private static boolean bandera = false;
     private static int index;
     private static BufferedWriter out;
     private static ArrayList<String> componentes;
 
     public static void initDriver() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\mmorende\\Desktop\\chromedriver.exe");
-        driver = new ChromeDriver();
+        //System.setProperty("webdriver.chrome.driver", "C:\\Users\\mmorende\\Desktop\\chromedriver.exe");
+        //driver = new ChromeDriver();
+        System.setProperty("webdriver.ie.driver", "C:\\Users\\mmorende\\Desktop\\IEDriverServer.exe");
+        driver = new InternetExplorerDriver();
 
         componentes = LecturaExcel.listado();
         for (int i = 0; i < componentes.size(); i++) {
